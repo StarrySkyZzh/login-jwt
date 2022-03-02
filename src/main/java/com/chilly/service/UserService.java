@@ -2,9 +2,7 @@ package com.chilly.service;
 
 import com.chilly.entity.User;
 
-/**
- * Created by Chilly Cui on 2020/9/9.
- */
+
 public interface UserService {
     /**
      * 登录接口

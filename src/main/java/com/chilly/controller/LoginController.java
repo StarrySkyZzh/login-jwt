@@ -8,35 +8,39 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.chilly.entity.User;
 import com.chilly.service.UserService;
 import com.chilly.utils.JWTUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Chilly Cui on 2020/9/9.
- */
+
 @RestController
+@Api(tags = "用户管理相关接口")
 @Slf4j
-public class UserController {
+public class LoginController {
 
     @Resource
     private UserService userService;
 
-    @GetMapping("/user/login")
-    public Map<String, Object> login(User user) {
+    @GetMapping("/login")
+    @ApiOperation("登录的接口")
+    public void login(User user, HttpServletResponse response) {
         log.info("用户名：{}", user.getName());
         log.info("password: {}", user.getPassword());
 
         Map<String, Object> map = new HashMap<>();
-
         try {
-            User userDB = userService.login(user);
+            User userDB = userService.login(user);//实现验证用户密码
 
             Map<String, String> payload = new HashMap<>();
             payload.put("id", userDB.getId());
@@ -46,17 +50,25 @@ public class UserController {
             map.put("state", true);
             map.put("msg", "登录成功");
             map.put("token", token);
-            return map;
+
         } catch (Exception e) {
             e.printStackTrace();
             map.put("state", false);
             map.put("msg", e.getMessage());
             map.put("token", "");
         }
-        return map;
+        JSONObject json = new JSONObject().fromObject(map);
+        try {
+            response.setContentType("text/json");
+            response.setCharacterEncoding("utf-8");
+            response.getWriter().print(json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @PostMapping("/user/test")
+    @ApiOperation("验证登录的接口")
     public Map<String, Object> test(HttpServletRequest request) {
         String token = request.getHeader("token");
         DecodedJWT verify = JWTUtils.verify(token);
@@ -71,5 +83,4 @@ public class UserController {
         map.put("msg", "请求成功");
         return map;
     }
-
 }

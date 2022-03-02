@@ -2,15 +2,14 @@ package com.chilly.service;
 
 import com.chilly.dao.UserDAO;
 import com.chilly.entity.User;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
-/**
- * Created by Chilly Cui on 2020/9/9.
- */
+
 @Service
 public class UserServiceImpl implements UserService {
 

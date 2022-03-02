@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chilly.dao.StudentDao">
+    <select id="find"  resultType="Student">
+        select * from student
+        where iid =#{iid}
+    </select>
+
+    <update id="save">
+        update student
+        set name=#{name},id=#{id},sex=#{sex},college=#{college},lessons=#{lessons},phone=#{phone}
+        where iid=#{iid}
+    </update>
+
+</mapper>
