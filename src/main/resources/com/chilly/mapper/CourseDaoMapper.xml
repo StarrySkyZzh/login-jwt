@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chilly.dao.CourseDao">
+    <select id="find" resultType="Course">
+        select * from work
+    </select>
+
+    <select id="FindTopic" resultType="Course">
+        select * from work
+        where topic=#{topic}
+    </select>
+
+    <update id="commit" parameterType="Course">
+        update work
+        set score="10"
+        where topic=#{topic} and answer=#{ans}
+    </update>
+
+    <update id="ResetScore">
+        update work
+        set score ="0"
+    </update>
+
+    <insert id="add" parameterType="Course">
+        insert into work(id,topic,score,answer,ans)
+        values (#{id},#{topic},#{score},#{answer},#{ans})
+    </insert>
+
+    <update id="edit">
+        update work
+        set answer=#{answer},topic=#{topic}
+        where id=#{id}
+    </update>
+
+    <delete id="delete">
+        delete from work
+        where id=#{id}
+    </delete>
+
+    <update id="AfterDelete">
+        update work
+        set id=id-1
+        where id>#{id}
+    </update>
+</mapper>
