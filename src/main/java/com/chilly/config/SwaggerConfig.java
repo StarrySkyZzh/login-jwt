@@ -22,9 +22,9 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage("com.chilly.controller"))
                 .paths(PathSelectors.any())
                 .build().apiInfo(new ApiInfoBuilder()
-                        .title("SpringBoot整合Swagger")
-                        .description("SpringBoot整合Swagger，详细信息......")
-                        .version("9.0").contact(new Contact("啊啊啊啊", "blog.csdn.net", "aaa@gmail.com"))
+                        .title("在线成绩管理系统")
+                        .description("在线成绩管理系统，详细信息......")
+                        .version("9.0").contact(new Contact("zzh-ccy", "blog.csdn.net", "aaa@gmail.com"))
                         .license("The Apache License").licenseUrl("www.baidu.com").build()
                 );
     }

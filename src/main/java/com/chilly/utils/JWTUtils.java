@@ -8,9 +8,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import java.util.Calendar;
 import java.util.Map;
 
-/**
- * Created by Chilly Cui on 2020/9/9.
- */
+
 public class JWTUtils {
     private static String SECRET = "token!Q@W#E$R";
 

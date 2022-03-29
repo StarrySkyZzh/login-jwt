@@ -24,6 +24,7 @@ import java.util.List;
 @RestController
 @Api(tags = "用户操作管理相关接口")
 @Slf4j
+@CrossOrigin
 public class TableController {
 
     public String Time;
@@ -34,9 +35,9 @@ public class TableController {
     @Autowired
     private ScoreService scoreService;
 
-    @GetMapping("/work")
+    @GetMapping("/student/work")
     @ApiOperation("显示学生考题")
-    public void work(Course course, HttpServletResponse response){
+    public void StuentWork(Course course, HttpServletResponse response){
         List<Course> list = courseService.find(course);
         JSONArray json = new JSONArray().fromObject(list);
         try {
@@ -48,7 +49,7 @@ public class TableController {
         }
     }
 
-    @PostMapping("/work/start")
+    @PostMapping("/student/work/start")
     @ApiOperation("开始考试")
     public void start(){
         courseService.ResetScore();
@@ -58,7 +59,7 @@ public class TableController {
         log.info("时间:{}",Time);
     }
 
-    @PostMapping("/work/commit")
+    @PostMapping("/student/work/commit")
     @ApiOperation("作答")
     public void commit(Course course,HttpServletResponse response){
         courseService.commit(course);
@@ -73,7 +74,7 @@ public class TableController {
         }
     }
 
-    @PostMapping("/work/end")
+    @PostMapping("/student/work/end")
     @ApiOperation("结束考试")
     public void end(@Param("timess") String timess,HttpServletResponse response){
         timess=Time;
@@ -89,7 +90,24 @@ public class TableController {
         }
     }
 
+
+    @GetMapping("/teacher/work")
+    @ApiOperation("显示学生考题")
+    public void TeacherWork(Course course, HttpServletResponse response){
+        List<Course> list = courseService.find(course);
+        JSONArray json = new JSONArray().fromObject(list);
+        try {
+            response.setContentType("text/json");
+            response.setCharacterEncoding("utf-8");
+            response.getWriter().print(json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     @GetMapping("/teacher/show")
+    @ApiOperation("显示老师信息")
     public void show(HttpServletResponse response){
         List<Score> list = scoreService.find();
         JSONArray json = new JSONArray().fromObject(list);
@@ -103,18 +121,21 @@ public class TableController {
     }
 
     @PostMapping("/teacher/add")
+    @ApiOperation("修改老师题目信息")
     public void add(Course course){
         courseService.add(course);
         log.info("新增题目序号：{}",course.getId());
     }
 
     @PostMapping("/teacher/edit")
+    @ApiOperation("编辑老师信息")
     public void edit(Course course){
         log.info("编辑题目序号：{}",course.getId());
         courseService.edit(course);
     }
 
     @PostMapping("/teacher/delete")
+    @ApiOperation("删除老师题目       ")
     public void delete(Course course){
         log.info("删除题目序号：{}",course.getId());
         courseService.delete(course);

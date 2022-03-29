@@ -14,9 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Chilly Cui on 2020/9/9.
- */
 @Slf4j
 public class JWTInterceptor implements HandlerInterceptor {
 

@@ -12,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,12 +28,13 @@ import java.util.Map;
 @RestController
 @Api(tags = "用户管理相关接口")
 @Slf4j
+@CrossOrigin
 public class LoginController {
 
     @Resource
     private UserService userService;
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     @ApiOperation("登录的接口")
     public void login(User user, HttpServletResponse response) {
         log.info("用户名：{}", user.getName());
@@ -45,10 +47,12 @@ public class LoginController {
             Map<String, String> payload = new HashMap<>();
             payload.put("id", userDB.getId());
             payload.put("name", userDB.getName());
+            payload.put("capacity",userDB.getCapacity());
             String token = JWTUtils.getToken(payload);
 
             map.put("state", true);
             map.put("msg", "登录成功");
+            map.put("capacity",userDB.getCapacity());
             map.put("token", token);
 
         } catch (Exception e) {
@@ -74,8 +78,10 @@ public class LoginController {
         DecodedJWT verify = JWTUtils.verify(token);
         String id = verify.getClaim("id").asString();
         String name = verify.getClaim("name").asString();
+        String capacity=verify.getClaim("capacity").asString();
         log.info("用户id：{}", id);
         log.info("用户名: {}", name);
+        log.info("capacity:{}",capacity);
 
         //TODO 业务逻辑
         Map<String, Object> map = new HashMap<>();
